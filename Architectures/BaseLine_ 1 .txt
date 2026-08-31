@@ -1,0 +1,74 @@
+PiPeline  ( image classification )
+-------------------------------------
+
+
+
+
+                 Volleyball Dataset
+                        │
+                        ▼
+              Video IDs / Splits
+                        │
+                        ▼
+                  annotations.txt
+                        │
+                        ▼
+              Activity Label
+                 r_spike ...
+                        │
+                        ▼
+                 Middle Frame
+                        │
+                        ▼
+              Image Preprocessing
+        Resize → Crop → Tensor → Normalize
+                        │
+                        ▼
+                  DataLoader
+                 Batch Size = 16
+                        │
+                        ▼
+                  ResNet-50
+              Pretrained ImageNet
+                        │
+                        ▼
+                  2048 Features
+                        │
+                        ▼
+                 Linear Layer
+                    2048 → 8
+                        │
+                        ▼
+                    Logits
+                        │
+                        ▼
+              CrossEntropyLoss
+                        │
+                        ▼
+                 Backpropagation
+                        │
+                        ▼
+                    AdamW
+                        │
+                        ▼
+                 Updated Model
+                        │
+             ┌──────────┴──────────┐
+             ▼                     ▼
+        Validation              Training
+             │
+             ▼
+      Best Validation Acc
+             │
+             ▼
+      baseline1_best.pth
+             │
+             ▼
+          Test Set
+             │
+       ┌─────┼─────┐
+       ▼     ▼     ▼
+     Loss   Acc    F1
+             │
+             ▼
+      Confusion Matrix

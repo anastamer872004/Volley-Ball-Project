@@ -1,0 +1,122 @@
+---------------------------
+Architeture
+---------------------------
+
+           Baseline3A
+                 │
+           Player Crop
+                 │
+                 ▼
+          Action Label ( 9 actions )
+          waiting / spiking / ...
+                 │
+                 ▼
+          2048-features per player
+                 │
+                 ▼
+            Baseline5
+          (B, 9 (frame), 12(player), 2048)
+
+                 ↓
+
+              Rearrange
+                 ↓
+          (B, 12, 9, 2048)
+                 ↓
+      ┌──────────────────────────┐
+      │   LSTM independently     │
+      │   for each player        │
+      └──────────────────────────┘
+                 ↓
+          (B×12, 9, 1024)
+                 ↓
+             Last Hidden State
+                 ↓
+          (B×12, 1024)
+                 ↓
+            Restore Players
+                 ↓
+          (B, 12, 1024)
+                  ↓
+          Max Pooling Players
+                  ↓
+             (B, 1024)
+                  ↓
+          Linear 1024 → 128
+                  ↓
+                   
+           Linear 128 → 8
+                  ↓
+             Group Activity
+
+
+
+----------------------------
+Slide
+----------------------------
+
+Temporal on crops
+(LSTM on player level)
+
+→ build representation per person
+
+→ represent each clip with the last hidden state
+
+→ Max pool all players representations
+
+→ NN network like B3
+
+→ Features classifier - no temporal info
+
+
+
+
+------------------------------------------------
+intended pipeline
+------------------------------------------------
+
+Player crops
+    ↓
+LSTM لكل لاعب عبر الزمن
+    ↓
+Last hidden state لكل لاعب
+    ↓
+Max Pooling بين اللاعبين
+    ↓
+Classifier
+    ↓
+Group Activity
+
+
+
+
+
+
+
+
+
+
+
+
+======================================================================
+
+x = x.view(batch_size * num_players, sequence_length, num_features)
+
+x, _ = self.lstm(x)
+
+
+
+المقصود هو أن يصبح كل لاعب sequence مستقلة:
+
+Player 1:
+Frame 1 → Frame 2 → ... → Frame 9
+
+Player 2:
+Frame 1 → Frame 2 → ... → Frame 9
+
+
+وبالتالي هذا يتطابق مع:
+
+Temporal on crops (LSTM on player level)
+
+======================================================================

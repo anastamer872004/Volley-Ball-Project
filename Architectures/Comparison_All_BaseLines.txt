@@ -1,0 +1,125 @@
+================================================
+==========
+Baseline3A --------> Individual Action Recognition
+==========
+
+Player Crop
+   ↓
+Pretrained ResNet-50
+   ↓
+2048 Features
+   ↓
+FC Head
+2048 → 265 → 128 → 9
+   ↓
+Player Action
+
+================================================
+============
+Baseline3B ---------> Group Activity
+============
+
+9 Frames × 12 Players × 2048
+              ↓
+       Mean over Frames  (fixed temporal aggregation)
+              ↓
+        12 × 2048
+              ↓
+       Max over Players
+              ↓
+          2048
+              ↓
+   FC: 2048 → 1000 → 128 → 8
+              ↓
+       Group Activity
+
+===============================================
+
+================================================
+=======
+B_5   -------->   LSTM على مستوى اللاعب
+=======
+
+Player 1 → LSTM
+Player 2 → LSTM
+...
+Player 12 → LSTM
+       ↓
+Max Pool
+       ↓
+Group Activity
+
+================================================
+==========
+B_6      ---------> LSTM على مستوى الـ image/frame.
+==========
+
+12 Players
+     ↓
+Max Pool
+     ↓
+Frame Representation
+     ↓
+LSTM   (sequence of 9 frame) and take the last frame represntation
+     ↓
+Group Activity
+
+=================================================
+===========
+B_7       -------------> LSTM_1 على اللاعب → Pool → LSTM_2 على المشهد
+===========
+
+Players
+   ↓
+LSTM_1 لكل لاعب
+   ↓
+Player representations
+   ↓
+Max Pool
+   ↓
+Frame representation
+   ↓
+LSTM_2 (Scene)
+
+
+==================================================
+===========
+B_8
+===========
+
+Player LSTM_1
+    ↓
+قسّم اللاعبين إلى Team 1 و Team 2
+    ↓
+Pool Team 1
+Pool Team 2
+    ↓
+Concatenate Team 1 + Team 2
+    ↓
+LSTM_2
+
+========================================================================================================
+
+---------------------------------------
+LSTM_1 : كل لاعب تحرك إزاي عبر الـ 9 Frames
+========
+
+Player 1:
+Frame 1 → Frame 2 → ... → Frame 9
+
+Player 2:
+Frame 1 → Frame 2 → ... → Frame 9
+
+...
+
+LSTM_2 : المشهد كله اتطور إزاي عبر الـ 9 Frames
+========
+
+Clip1:
+F1 → representation
+F2 → representation
+...
+F9 → representation
+
+
+===============================================================

@@ -1,0 +1,50 @@
+---------------------------------------------------
+Temporal Extension Of Baseline_3
+---------------------------------------------------
+
+
+                    RAW VIDEO
+                        ↓
+                      Frames
+                        ↓
+                Player Detection
+                        ↓
+                  Player Crops
+                        ↓
+                   Baseline3A
+                 ResNet-50
+                        ↓
+          2048 Feature / Player
+                        ↓
+            ┌────────────────────┐
+            │ 9 Frames           │
+            │ 12 Players         │
+            │ 2048 Features      │
+            └────────────────────┘
+                        ↓
+              Max Pool over Players
+                        ↓
+                9 × 2048
+                        ↓
+                     LSTM
+              hidden size = 1024
+                        ↓
+                9 × 1024
+                        ↓
+              Last Time Step
+                        ↓
+                    1024
+                        ↓
+               Linear 1024→128
+                        ↓
+                     ReLU
+                        ↓
+                 Dropout 0.5
+                        ↓
+               Linear 128→8
+                        ↓
+                 8 Logits
+                        ↓
+              CrossEntropyLoss
+                        ↓
+                Group Activity

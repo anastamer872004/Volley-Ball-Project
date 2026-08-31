@@ -1,0 +1,113 @@
+----------------------------------------
+BaseLine3_a  ( Person Classification)
+----------------------------------------
+
+
+Player Crop
+    ↓
+Baseline3A
+    ↓
+ResNet50
+    ↓
+2048 Features
+
+
+--------------------------
+BaseLine3_b
+--------------------------
+
+2048 Features
+    ↓
+Baseline3B
+    ↓
+Mean over Frames
+    ↓
+Max over Players
+    ↓
+MLP
+    ↓
+Group Activity
+
+
+
+-----------------------------
+Full Arc
+-----------------------------
+
+                    VIDEO
+                      │
+                      ▼
+                    Frames
+                      │
+                      ▼
+              Player Bounding Boxes
+                      │
+                      ▼
+                Crop Each Player
+                      │
+                      ▼
+                 Baseline3A
+                      │
+                      ▼
+             2048-D Player Features
+                      │
+                      ▼
+             ┌───────────────────┐
+             │  9 Frames         │
+             │  12 Players       │
+             │  2048 Features    │
+             └───────────────────┘
+                      │
+                      ▼
+             Mean over Frames
+                      │
+                 12 × 2048
+                      │
+                      ▼
+             Max over Players
+                      │
+                    2048
+                      │
+                      ▼
+               FC 2048 → 1000
+                      │
+                    ReLU
+                      │
+                  Dropout
+                      │
+               FC 1000 → 128
+                      │
+                    ReLU
+                      │
+                  Dropout
+                      │
+               FC 128 → 8
+                      │
+                      ▼
+              Group Activity
+
+
+
+
+
+-------------------------------------------
+Explain :
+-------------------------------------------
+
+
+Baseline3A
+= "What is each player doing?"
+        ↓
+2048 features
+
+Baseline3B
+= "What is happening in the whole clip?"
+        ↓
+Mean across time
+        ↓
+Max across players
+        ↓
+MLP  (Multi-Layer Perceptron)  ( NN )
+        ↓
+8 Group Activities
+
