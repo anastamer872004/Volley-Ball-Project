@@ -1,0 +1,36 @@
+[project]
+name = "volleyball"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13.7"
+dependencies = [
+    "matplotlib>=3.10.6",
+    "pillow>=11.0.0",
+    "scikit-learn>=1.7.1",
+    "torch>=2.8.0",
+    "torchvision>=0.23.0",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "D", "RET", "I", "B", "N", "W"]
+ignore = [
+    "D100",
+    "D104",
+    "D105",
+    "D107",
+    "D203",
+    "D205",
+    "D211",
+    "D212",
+]
+preview = true
+explicit-preview-rules = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
