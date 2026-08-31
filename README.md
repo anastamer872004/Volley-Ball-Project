@@ -62,10 +62,14 @@ Group Activity Recognition in sports videos is challenging because it requires:
 **Figure 1**: High level figure for group activity recognition via a hierarchical model. Each person in a scene is modeled using a temporal model that captures his/her dynamics, these models are integrated into a higher-level model that captures scene-level activity.
 
 <img src="https://github.com/mostafa-saad/deep-activity-rec/blob/master/img/fig2-b.png" alt="Figure 2" height="400" >
+<img width="445" height="342" alt="image" src="https://github.com/user-attachments/assets/8583f3f5-9755-4130-a1d1-17020a21c01f" />
+
 
 **Figure 2**: Detailed figure for the model. Given tracklets of K-players, we feed each tracklet in a CNN, followed by a person LSTM layer to represent each player's action. We then pool over all people's temporal features in the scene. The output of the pooling layer is feed to the second LSTM network to identify the whole teams activity.
 
 <img src="https://github.com/mostafa-saad/deep-activity-rec/blob/master/img/fig3.jpg" alt="Figure 3" height="400" >
+<img width="455" height="341" alt="image" src="https://github.com/user-attachments/assets/77a008db-3330-4106-97e2-c0bb854d601d" />
+
 
 **Figure 3**: Previous basic mode drops spatial information. In updated model, 2-group pooling to capture spatial arrangements of players.
 
