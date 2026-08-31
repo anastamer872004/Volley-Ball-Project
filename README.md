@@ -1,37 +1,46 @@
 <h1 align="center">Deep Learning Project for Volleyball Activity Recognition</h1>
 
-<h2 align="center">An implementation of seminal CVPR 2016 paper: "A Hierarchical Deep Temporal Model for Group Activity Recognition."</h2>
 
 <p align="center">
   <img src="https://i.imgur.com/rhQRxLb.png" alt="Volleyball Activities"  width="80%">
   <img src="https://i.imgur.com/CnDLcFK.jpg" alt="Volleyball Activities"  width="65%">
 </p>
 
-## Table of Contents
-- [Installation](#installation)
-- [Dataset](#dataset)
-  - [Dataset Labels](#dataset-labels)
-  - [Dataset Splits](#dataset-splits)
-- [Ablation Study](#ablation-study)
-  - [Baselines Insights](#baselines-insights)
-  - [Baselines Implementation Comparison](#baselines-implementation-comparison)
-- [Evaluation Metrics \& Observations](#evaluation-metrics--observations)
-- [Usage](#usage)
-  - [Training](#training)
-  - [Features and Checkpoints](#features-and-checkpoints)
-  - [Configuration](#configuration)
-  - [Evaluation](#evaluation)
-  - [Logging and Outputs](#logging-and-outputs)
-- [Model Deployment](#model-deployment)
-  - [Model Deployment Pipeline](#model-deployment-pipeline)
-  - [Try It Yourself](#try-it-yourself)
-  - [How to Use the Model](#how-to-use-the-model)
-
  ##  Implemented Paper
 
 | Paper        | Year | Original Paper | Original Implementation | Key Points                        |
 |--------------|------|----------------|----------------|-----------------------------------|
 | **CVPR 16**| 2016 | [Paper](https://arxiv.org/pdf/1607.02643) | [Implementation](https://github.com/mostafa-saad/deep-activity-rec/tree/master) | Two-stage hierarchical LSTM for group activity recognition      |
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Problem Statement](#problem-statement)
+- [Architecture](#architecture)
+  - [Model Variants](#model-variants)
+  - [Key Components](#key-components)
+- [Dataset](#dataset)
+  - [Dataset Labels](#dataset-labels)
+  - [Dataset Splits](#dataset-splits)
+  - [Dataset Sample](#dataset-sample)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Project Configuration](#project-configuration)
+  - [Project Structure](#project-structure)
+- [Usage](#usage)
+  - [Feature Extraction](#feature-extraction)
+  - [Training Models](#training-models)
+  - [Available Results](#available-results)
+- [Development](#development)
+  - [Development Workflow](#development-workflow)
+  - [Customization](#customization)
+  - [Adding New Models](#adding-new-models)
+- [Research Contributions](#research-contributions)
+- [References](#references)
+- [License](#license)
+
+
 
 
 ##  Overview
@@ -48,7 +57,17 @@ Group Activity Recognition in sports videos is challenging because it requires:
 
 ##  Architecture
 
-The implementation includes **8 different baseline models** that progressively increase in complexity:
+<img src="https://github.com/mostafa-saad/deep-activity-rec/blob/master/img/fig1.png" alt="Figure 1" height="400" >
+
+**Figure 1**: High level figure for group activity recognition via a hierarchical model. Each person in a scene is modeled using a temporal model that captures his/her dynamics, these models are integrated into a higher-level model that captures scene-level activity.
+
+<img src="https://github.com/mostafa-saad/deep-activity-rec/blob/master/img/fig2-b.png" alt="Figure 2" height="400" >
+
+**Figure 2**: Detailed figure for the model. Given tracklets of K-players, we feed each tracklet in a CNN, followed by a person LSTM layer to represent each player's action. We then pool over all people's temporal features in the scene. The output of the pooling layer is feed to the second LSTM network to identify the whole teams activity.
+
+<img src="https://github.com/mostafa-saad/deep-activity-rec/blob/master/img/fig3.jpg" alt="Figure 3" height="400" >
+
+**Figure 3**: Previous basic mode drops spatial information. In updated model, 2-group pooling to capture spatial arrangements of players.
 
 ### Model Variants
 
@@ -219,13 +238,6 @@ uv run python trainers/train_b8.py
 ```
 
 
-### Key Insights
-
-1. **Temporal Modeling is Critical**: Models with LSTM components (B4, B5, B7, B8) consistently outperform frame-based approaches
-2. **Team-based Aggregation Works**: Baseline 8's dual LSTM with team-based feature aggregation achieves the best results
-3. **Hierarchical Approaches Excel**: Multi-level modeling (B7, B8) captures both individual and group dynamics effectively
-4. **Feature Quality Matters**: Enhanced feature extraction (B3B vs B3A) provides measurable improvements
-
 ### Available Results
 
 - **Training Curves**: Loss and accuracy plots for all baselines
@@ -243,6 +255,7 @@ This implementation provides:
 4. **Spatial Relationships**: Team-based feature aggregation
 5. **Reproducible Results**: Complete training and evaluation pipeline
 
+### Development
 
 ### Development Workflow
 
@@ -273,12 +286,6 @@ uv run ruff format .
 3. Create a training script in `trainers/`
 4. Update constants if needed
 
-### Modifying Activities
-
-Edit `constants.py` to:
-- Add new individual actions
-- Define new group activities
-- Adjust feature dimensions
 
 ##  References
 
@@ -286,13 +293,6 @@ Edit `constants.py` to:
 - [CVPR 2016](https://cvpr2016.thecvf.com/)
 - [Group Activity Recognition Survey](https://arxiv.org/abs/2006.06966)
 
-##  Contributing
-
-Contributions are welcome! Please feel free to:
-- Report bugs and issues
-- Suggest new model architectures
-- Improve documentation
-- Add new evaluation metrics
 
 ##  License
 
