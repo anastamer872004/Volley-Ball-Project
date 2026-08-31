@@ -1,3 +1,12 @@
+<h1 align="center">Deep Learning Project for Volleyball Activity Recognition</h1>
+
+<h2 align="center">An implementation of seminal CVPR 2016 paper: "A Hierarchical Deep Temporal Model for Group Activity Recognition."</h2>
+
+<p align="center">
+  <img src="https://i.imgur.com/rhQRxLb.png" alt="Volleyball Activities"  width="80%">
+  <img src="https://i.imgur.com/CnDLcFK.jpg" alt="Volleyball Activities"  width="65%">
+</p>
+
 # Volleyball Group Activity Recognition
 
 This repository implements a comprehensive framework for **Group Activity Recognition (GAR)** in volleyball videos, based on the research paper:
