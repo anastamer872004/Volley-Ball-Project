@@ -17,7 +17,7 @@
 - [Overview](#overview)
 - [Problem Statement](#problem-statement)
 - [Architecture](#architecture)
-  - [Model Variants](#model-variants)
+  - [Ablation Study](#Ablation-Study)
   - [Key Components](#key-components)
 - [Dataset](#dataset)
   - [Dataset Labels](#dataset-labels)
@@ -69,7 +69,7 @@ Group Activity Recognition in sports videos is challenging because it requires:
 
 **Figure 3**: Previous basic mode drops spatial information. In updated model, 2-group pooling to capture spatial arrangements of players.
 
-### Model Variants
+### Ablation Study
 
 | Model | Description | Architecture | Test Accuracy |
 |-------|-------------|--------------|---------------|
