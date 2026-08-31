@@ -7,18 +7,38 @@
   <img src="https://i.imgur.com/CnDLcFK.jpg" alt="Volleyball Activities"  width="65%">
 </p>
 
-# Volleyball Group Activity Recognition
+## Table of Contents
+- [Installation](#installation)
+- [Dataset](#dataset)
+  - [Dataset Labels](#dataset-labels)
+  - [Dataset Splits](#dataset-splits)
+- [Ablation Study](#ablation-study)
+  - [Baselines Insights](#baselines-insights)
+  - [Baselines Implementation Comparison](#baselines-implementation-comparison)
+- [Evaluation Metrics \& Observations](#evaluation-metrics--observations)
+- [Usage](#usage)
+  - [Training](#training)
+  - [Features and Checkpoints](#features-and-checkpoints)
+  - [Configuration](#configuration)
+  - [Evaluation](#evaluation)
+  - [Logging and Outputs](#logging-and-outputs)
+- [Model Deployment](#model-deployment)
+  - [Model Deployment Pipeline](#model-deployment-pipeline)
+  - [Try It Yourself](#try-it-yourself)
+  - [How to Use the Model](#how-to-use-the-model)
 
-This repository implements a comprehensive framework for **Group Activity Recognition (GAR)** in volleyball videos, based on the research paper:
+ ##  Implemented Paper
 
-**[A Hierarchical Deep Temporal Model for Group Activity Recognition](https://www.cs.sfu.ca/~mori/research/papers/ibrahim-cvpr16.pdf)**  
-*Mostafa S. Ibrahim, Srikanth Muralidharan, Zhiwei Deng, Arash Vahdat, Greg Mori. IEEE Computer Vision and Pattern Recognition 2016*
+| Paper        | Year | Original Paper | Original Implementation | Key Points                        |
+|--------------|------|----------------|----------------|-----------------------------------|
+| **CVPR 16**| 2016 | [Paper](https://arxiv.org/pdf/1607.02643) | [Implementation](https://github.com/mostafa-saad/deep-activity-rec/tree/master) | Two-stage hierarchical LSTM for group activity recognition      |
 
-## 🏐 Overview
+
+##  Overview
 
 This project focuses on recognizing complex group activities in volleyball games by analyzing the temporal dynamics and spatial relationships between multiple players. The system can identify various volleyball-specific group activities such as right/left team spikes, sets, passes, and winning points.
 
-## 🎯 Problem Statement
+##  Problem Statement
 
 Group Activity Recognition in sports videos is challenging because it requires:
 - Understanding individual player actions
@@ -26,7 +46,7 @@ Group Activity Recognition in sports videos is challenging because it requires:
 - Capturing spatial relationships between multiple players
 - Recognizing coordinated team activities
 
-## 🏗️ Architecture
+##  Architecture
 
 The implementation includes **8 different baseline models** that progressively increase in complexity:
 
@@ -50,15 +70,71 @@ The implementation includes **8 different baseline models** that progressively i
 - **Spatial Aggregation**: Team-based feature aggregation for group activity recognition
 - **Multi-level Classification**: Hierarchical approach from individual actions to group activities
 
-## 📊 Dataset & Annotations
+## Dataset
+We used a volleyball dataset introduced in the aforementioned paper. The dataset consists of:
+- **Videos**: 55 YouTube volleyball videos.
+- **Frames**: 4830 annotated frames, each with bounding boxes around players and labels for both individual actions and group activities.
 
-The system works with volleyball video datasets containing:
-- **Individual Actions**: 9 action classes (waiting, setting, digging, falling, spiking, blocking, jumping, moving, standing)
-- **Group Activities**: 8 group activity classes (r_spike, r_set, r-pass, r_winpoint, l-spike, l_set, l-pass, l_winpoint)
-- **Player Tracking**: Bounding box annotations for each player across video frames
-- **Temporal Segmentation**: Video clips annotated with group activity labels
+### Dataset Labels
 
-## 🚀 Getting Started
+<table>
+  <tr>
+    <!-- We ensure each cell is top-aligned -->
+    <td valign="top">
+
+#### Group Activity Classes
+
+| Class          | Instances |
+|----------------|-----------|
+| Right set      | 644       |
+| Right spike    | 623       |
+| Right pass     | 801       |
+| Right winpoint | 295       |
+| Left winpoint  | 367       |
+| Left pass      | 826       |
+| Left spike     | 642       |
+| Left set       | 633       |
+
+</td>
+    <td valign="top">
+
+#### Action Classes
+
+| Class    | Instances |
+|----------|-----------|
+| Waiting  | 3601      |
+| Setting  | 1332      |
+| Digging  | 2333      |
+| Falling  | 1241      |
+| Spiking  | 1216      |
+| Blocking | 2458      |
+| Jumping  | 341       |
+| Moving   | 5121      |
+| Standing | 38696     |
+
+</td>
+  </tr>
+</table>
+
+
+
+### Dataset Splits
+  - Training Set: 2/3 of the videos.
+    - Train Videos: 1, 3, 6, 7, 10, 13, 15, 16, 18, 22, 23, 31, 32, 36, 38, 39, 40, 41, 42, 48, 50, 52, 53, 54. 
+  - Validation Set: 15 videos.
+    - Validation Videos: 0, 2, 8, 12, 17, 19, 24, 26, 27, 28, 30, 33, 46, 49, 51.
+  - Test Set: 1/3 of the videos.
+    - Test Videos: 4, 5, 9, 11, 14, 20, 21, 25, 29, 34, 35, 37, 43, 44, 45, 47.
+
+### Dataset Sample
+<p align="center">
+
+<img  src="https://i.imgur.com/DUhaofS.gif" alt="B8" width="75%">
+</p>
+
+The dataset is available for download at [GitHub Deep Activity Rec](https://github.com/mostafa-saad/deep-activity-rec#dataset), or on Kaggle [here](https://www.kaggle.com/datasets/ahmedmohamed365/volleyball/data?select=volleyball_)
+
+##  Getting Started
 
 ### Prerequisites
 
@@ -114,7 +190,7 @@ volleyball/
 └── logs/                  # Training logs
 ```
 
-## 🔧 Usage
+##  Usage
 
 ### 1. Feature Extraction
 
@@ -142,23 +218,6 @@ uv run python trainers/train_b1.py
 uv run python trainers/train_b8.py
 ```
 
-### 3. Model Evaluation
-
-Models are automatically evaluated on test sets during training, generating:
-- Confusion matrices for training and validation
-- Loss and accuracy curves
-- F1 scores and classification metrics
-
-## 📈 Results & Performance
-
-### Performance Summary
-
-The repository includes comprehensive evaluation results with **Baseline 8** achieving the highest test accuracy of **89.08%**:
-
-- **Best Performing Model**: Baseline 8 (Advanced LSTM) - 89.08% accuracy
-- **Strong Temporal Models**: Baseline 7 (86.46%) and Baseline 5 (83.40%) show the importance of temporal modeling
-- **Feature Quality Impact**: Baseline 3B (82.12%) outperforms 3A (78.27%), demonstrating improved feature representation
-- **Baseline Comparison**: Simple ResNet-50 (Baseline 1) achieves 74.83%, providing a solid foundation
 
 ### Key Insights
 
@@ -174,7 +233,7 @@ The repository includes comprehensive evaluation results with **Baseline 8** ach
 - **Model Weights**: Pre-trained models for immediate use
 - **Logs**: Detailed training logs for reproducibility
 
-## 🔬 Research Contributions
+##  Research Contributions
 
 This implementation provides:
 
@@ -184,7 +243,6 @@ This implementation provides:
 4. **Spatial Relationships**: Team-based feature aggregation
 5. **Reproducible Results**: Complete training and evaluation pipeline
 
-## 🛠️ Development
 
 ### Development Workflow
 
@@ -222,13 +280,13 @@ Edit `constants.py` to:
 - Define new group activities
 - Adjust feature dimensions
 
-## 📚 References
+##  References
 
 - [Original Paper](https://www.cs.sfu.ca/~mori/research/papers/ibrahim-cvpr16.pdf)
 - [CVPR 2016](https://cvpr2016.thecvf.com/)
 - [Group Activity Recognition Survey](https://arxiv.org/abs/2006.06966)
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please feel free to:
 - Report bugs and issues
@@ -236,16 +294,6 @@ Contributions are welcome! Please feel free to:
 - Improve documentation
 - Add new evaluation metrics
 
-## 📄 License
+##  License
 
 This project is for research purposes. Please cite the original paper if you use this implementation in your research.
-
-## 🙏 Acknowledgments
-
-- Original authors for the foundational research
-- PyTorch community for the deep learning framework
-- Computer vision research community for open-source tools and datasets
-
----
-
-**Note**: This implementation focuses on volleyball group activity recognition and serves as a comprehensive baseline for sports video analysis research.
